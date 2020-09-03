@@ -11,7 +11,7 @@ python manage.py runserver
 ```
 
 
-* database postgreSQL
+* database postgreSQL console : 
 
 ```
 
@@ -19,8 +19,22 @@ create database python_postgresql_db;
 
 ```
 
+* database config : 
 
-* migrate
+```
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'python_postgresql_db',
+        'USER': 'postgres',
+        'PASSWORD': '123',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+
+```
+
+
+* migrate model to database 
 
 ```
 
