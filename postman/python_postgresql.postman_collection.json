@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "2c22d060-9f04-4fd3-8570-b885f321ffac",
+		"name": "python_postgresql",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add_student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nim\":\"195410224\",\"name\":\"reno syahputra 3\",\"departement\":\"informatika\",\"status\":0}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/student",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"student"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list_student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"offset\":0,\"limit\":5,\"order_by\":\"name\",\"order_dir\":\"asc\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "detail_student",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/student/8d41c952-18a3-490e-9668-b2c93dd4fd24",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"student",
+						"8d41c952-18a3-490e-9668-b2c93dd4fd24"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_student",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nim\": \"195410224\",\r\n    \"name\": \"reno syahputra update\",\r\n    \"departement\": \"informatika\",\r\n    \"status\": 0\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/student/8d41c952-18a3-490e-9668-b2c93dd4fd24",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"student",
+						"8d41c952-18a3-490e-9668-b2c93dd4fd24"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_student",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/student/8d41c952-18a3-490e-9668-b2c93dd4fd24",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"student",
+						"8d41c952-18a3-490e-9668-b2c93dd4fd24"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
