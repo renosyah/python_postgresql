@@ -1,4 +1,4 @@
-# python-mysqlDB
+# python-PostgreSQL
 
 ## python dengan database sql PostgreSQL
 
