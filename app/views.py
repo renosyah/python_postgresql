@@ -4,10 +4,13 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from rest_framework.decorators import api_view
-from app.models import Student
-from app.serializers import StudentSerializer
+from app.models import Student,ImageProfile
+from app.serializers import StudentSerializer,ImageProfileSerializer
 from rest_framework.decorators import api_view
 from django.db.models.functions import Lower
+
+from .forms import UploadFileForm
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 @api_view(['POST'])
@@ -63,3 +66,55 @@ def student(request,id):
     elif request.method == 'DELETE':
         student.delete()
         return JsonResponse({'message': 'The student succesfully delete'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def image_profile_add(request,id):
+        # get student detail by id
+    try: 
+        student = Student.objects.get(pk=id) 
+    except Student.DoesNotExist: 
+        return JsonResponse({'message': 'The student does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    
+    form = UploadFileForm(request.POST, request.FILES)
+    if not form.is_valid():  
+        return JsonResponse({'message': 'invalid form'}, status=status.HTTP_400_BAD_REQUEST)
+
+    tmp_file = request.FILES['file']
+
+    fs = FileSystemStorage()
+    filename = fs.save(tmp_file.name, tmp_file)
+    uploaded_file_url = fs.url(filename)
+
+    req = ImageProfile(student_id = id, url = uploaded_file_url)
+    req.save()  
+
+    return JsonResponse({'message': 'image uploaded'}, status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+def image_profile_list(request):
+    # get image profile list
+    req = JSONParser().parse(request)
+    offset, limit = req['offset'], req['limit']
+
+    if not limit:
+        return JsonResponse({'message': 'invalid param'}, status=status.HTTP_400_BAD_REQUEST)
+
+    image_profiles = ImageProfile.objects.all()[offset:offset+limit]
+    image_profile_serializer = ImageProfileSerializer(image_profiles, many=True)
+
+    return JsonResponse(image_profile_serializer.data, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET','PUT','DELETE'])
+def image_profile(request,id):
+    # get student detail by id
+    try: 
+        image_profile = ImageProfile.objects.get(pk=id) 
+    except ImageProfile.DoesNotExist: 
+        return JsonResponse({'message': 'The Image Profile does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+
+    # query detail by id
+    if request.method == 'GET':
+        image_profile_serializer = ImageProfileSerializer(image_profile)
+        return JsonResponse(image_profile_serializer.data, status=status.HTTP_200_OK)
+
+ 
