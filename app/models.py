@@ -14,4 +14,5 @@ class Student(models.Model):
 class ImageProfile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student = models.ForeignKey(Student, default=1, verbose_name="Student", on_delete=models.SET_DEFAULT)
+    filename = models.TextField(blank=False, default='')
     url = models.TextField(blank=False, default='')

@@ -140,17 +140,17 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/Acer/Desktop/chika.jpg"
+									"src": "/C:/Users/Acer/Desktop/tony.jpg"
 								},
 								{
 									"key": "title",
-									"value": "chika",
+									"value": "tony",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/student/1848855b-29dd-470f-9ead-c09e6bc4ce7c/image",
+							"raw": "http://localhost:8000/api/student/a4c7dadd-3dbc-4366-9482-a3580ed8e665/image",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -159,7 +159,7 @@
 							"path": [
 								"api",
 								"student",
-								"1848855b-29dd-470f-9ead-c09e6bc4ce7c",
+								"a4c7dadd-3dbc-4366-9482-a3580ed8e665",
 								"image"
 							]
 						}
@@ -196,7 +196,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/api/image/b692d1ab-4441-423b-ade6-e5cc9b57b36a",
+							"raw": "http://localhost:8000/api/image/76ed00bd-71a2-4e2c-8724-b659bbcfaefd",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -205,7 +205,44 @@
 							"path": [
 								"api",
 								"image",
-								"b692d1ab-4441-423b-ade6-e5cc9b57b36a"
+								"76ed00bd-71a2-4e2c-8724-b659bbcfaefd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validate_image_profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Acer/Desktop/tony_1.jpg"
+								},
+								{
+									"key": "title",
+									"value": "tony_try",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/image/8bb34771-35b6-4499-9609-217083f0ecf4/validate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"image",
+								"8bb34771-35b6-4499-9609-217083f0ecf4",
+								"validate"
 							]
 						}
 					},

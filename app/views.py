@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
+from python_postgresql import settings
 
 from rest_framework.decorators import api_view
 from app.models import Student,ImageProfile
@@ -11,6 +12,10 @@ from django.db.models.functions import Lower
 
 from .forms import UploadFileForm
 from django.core.files.storage import FileSystemStorage
+import face_recognition
+import numpy as np
+import os
+import PIL
 
 # Create your views here.
 @api_view(['POST'])
@@ -69,7 +74,7 @@ def student(request,id):
 
 @api_view(['POST'])
 def image_profile_add(request,id):
-        # get student detail by id
+    # get student detail by id
     try: 
         student = Student.objects.get(pk=id) 
     except Student.DoesNotExist: 
@@ -85,7 +90,7 @@ def image_profile_add(request,id):
     filename = fs.save(tmp_file.name, tmp_file)
     uploaded_file_url = fs.url(filename)
 
-    req = ImageProfile(student_id = id, url = uploaded_file_url)
+    req = ImageProfile(student_id=id, filename=filename, url=uploaded_file_url)
     req.save()  
 
     return JsonResponse({'message': 'image uploaded'}, status=status.HTTP_201_CREATED)
@@ -116,5 +121,31 @@ def image_profile(request,id):
     if request.method == 'GET':
         image_profile_serializer = ImageProfileSerializer(image_profile)
         return JsonResponse(image_profile_serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def validate_image_profile(request,id):
+    # get student detail by id
+    try: 
+        image_profile = ImageProfile.objects.get(pk=id) 
+    except ImageProfile.DoesNotExist: 
+        return JsonResponse({'message': 'The Image Profile does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+    
+    form = UploadFileForm(request.POST, request.FILES)
+    if not form.is_valid():  
+        return JsonResponse({'message': 'invalid form'}, status=status.HTTP_400_BAD_REQUEST)
+
+    fs = FileSystemStorage()
+    known_image,unknown_image = face_recognition.load_image_file(fs.open(image_profile.filename)), face_recognition.load_image_file(request.FILES['file'])
+
+    known_image_encoding,unknown_encoding = face_recognition.face_encodings(known_image), face_recognition.face_encodings(unknown_image)
+    if len(known_image_encoding) == 0 or len(unknown_encoding) == 0:
+        return JsonResponse({"validate":False,"message":"one of image is empty"}, status=status.HTTP_200_OK)
+
+    results = face_recognition.compare_faces([known_image_encoding[0]], unknown_encoding[0])
+    if not all(results):
+        return JsonResponse({"validate":False,"message":"both are not same person"}, status=status.HTTP_200_OK)
+
+    return JsonResponse({"validate":True,"message":"both are same person"}, status=status.HTTP_200_OK)
+
 
  
